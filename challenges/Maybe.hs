@@ -48,3 +48,23 @@ minimumMay [x] = Just x
 minimumMay (x : xs) = case minimumMay xs of
     Just a -> Just $ min a x
     Nothing -> Nothing
+
+queryGreek :: GreekData -> String -> Maybe Double
+queryGreek g s = p
+  where
+    xs = lookupMay s g
+    {- HLINT ignore "Replace case with maybe" -}
+    m = case xs of
+        Just a -> tailMay a
+        Nothing -> Nothing
+    n = case m of
+        Just a -> maximumMay a
+        Nothing -> Nothing
+    o = case xs of
+        Just a -> headMay a
+        Nothing -> Nothing
+    p = case (o, n) of
+        (Just a, Just b) -> divMay (fromIntegral b) (fromIntegral a)
+        (Just _, Nothing) -> Nothing
+        (Nothing, Just _) -> Nothing
+        (Nothing, Nothing) -> Nothing
