@@ -6,7 +6,7 @@
 -- Module      :  MCPrelude
 -- Copyright   :  (c) The University of Glasgow 2001
 -- License     :  BSD-style (see the file libraries/base/LICENSE)
--- 
+--
 -- Maintainer  :  mightybyte@gmail.com
 -- Stability   :  stable
 -- Portability :  portable
@@ -154,7 +154,7 @@ newtype Seed = Seed { unSeed :: Integer }
   deriving (Eq,Show)
 
 mkSeed :: Integer -> Seed
-mkSeed n = Seed n
+mkSeed = Seed
 
 m :: Integer
 m = 0x7FFFFFFF
@@ -200,4 +200,3 @@ cardRanks = [2, 3, 4, 5]
 
 cardSuits :: [String]
 cardSuits = ["H", "D", "C", "S"]
-
