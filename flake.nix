@@ -13,7 +13,7 @@
       myDevTools = with hPkgs; [
         ghc # GHC compiler in the desired version (will be available on PATH)
         ghcid # Continuous terminal Haskell compile checker
-        ormolu # Haskell formatter
+        fourmolu # Haskell formatter
         hlint # Haskell codestyle checker
         hoogle # Lookup Haskell documentation
         haskell-language-server # LSP server for editor

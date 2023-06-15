@@ -1,10 +1,10 @@
 module Main where
 
-import Test.Hspec
-import MCPrelude (mkSeed)
-import Challenge (fiveRands, randString3, randEven, randOdd, randTen)
+import Challenge (fiveRands, generalB, randEven, randLetter, randOdd, randPair, randString3, randTen)
 import Data.ByteString.Lazy.UTF8 as BLU
 import Data.Digest.Pure.SHA (sha256, showDigest)
+import MCPrelude (mkSeed, rand)
+import Test.Hspec
 
 fiveRandsTests :: Spec
 fiveRandsTests = do
@@ -25,10 +25,26 @@ generalATests = do
     let f g = fst $ g $ mkSeed 1
     let xs = map f [randEven, randOdd, randTen]
     it "gets the right answer" $ do
-        product xs `shouldBe`  exp
+        product xs `shouldBe` exp
+
+randPairTests :: Spec
+randPairTests = do
+    let exp = ('l', 282475249)
+    let ans = fst $ randPair $ mkSeed 1
+    it "gets the right answer" $ do
+        ans `shouldBe` exp
+
+randPairTests2 :: Spec
+randPairTests2 = do
+    let exp = ('l', 282475249)
+    let ans = fst $ generalB (,) randLetter rand $ mkSeed 1
+    it "gets the right answer" $ do
+        ans `shouldBe` exp
 
 main :: IO ()
 main = hspec $ do
     fiveRandsTests
     randString3Test
     generalATests
+    randPairTests
+    randPairTests2
