@@ -63,7 +63,16 @@ type Gen a = Seed -> (a, Seed)
 -- repRandom :: [Gen a] -> Seed -> (a, Seed)
 repRandom :: [Gen a] -> Gen [a]
 repRandom [] s = ([], s)
-repRandom (x:xs) s = (y:ys, s1)
+repRandom (x : xs) s = (y : ys, s1)
   where
     (y, s1) = x s
     (ys, s2) = repRandom xs s1
+
+mkGen :: a -> Gen a
+mkGen a s = (a, s)
+
+genTwo :: Gen a -> (a -> Gen b) -> Gen b
+genTwo x y s = (b, s2)
+  where
+    (a, s1) = x s
+    (b, s2) = y a s1
