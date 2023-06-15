@@ -27,7 +27,7 @@
     in {
       apps.${system}.default = {
         type = "app";
-        program = "${app { }}/bin/pdftc";
+        program = "${app { }}/bin/main";
       };
 
       devShells.${system}.default = pkgs.mkShell {
