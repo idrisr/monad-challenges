@@ -22,6 +22,7 @@ import MCPrelude (
     greekDataB,
     mkSeed,
     rand,
+    salaries,
  )
 
 import Test.Hspec
@@ -95,6 +96,21 @@ queryGreekTest2 = do
         queryGreek2 greekDataB "psi" `shouldBe` queryGreek greekDataB "psi"
         queryGreek2 greekDataB "omega" `shouldBe` queryGreek greekDataB "omega"
 
+yLinkTest = do
+    it "works" $ do
+        yLink (+) (Just 10) (Just 10) `shouldBe` Just 20
+        yLink (+) Nothing (Just 10) `shouldBe` Nothing
+        yLink (+) (Just 10) Nothing `shouldBe` Nothing
+        yLink (+) Nothing Nothing `shouldBe` Nothing
+
+addSalariesTest = do
+    it "get the right salary totals" $ do
+        addSalaries salaries "alice" "bob" `shouldBe` Just 195000
+        addSalaries salaries "bob" "alice" `shouldBe` Just 195000
+        addSalaries salaries "eve" "alice" `shouldBe` Nothing
+        addSalaries salaries "carol" "alice" `shouldBe` Just 190000
+        addSalaries salaries "eve" "frank" `shouldBe` Nothing
+
 main :: IO ()
 main = hspec $ do
     fiveRandsTests
@@ -105,3 +121,5 @@ main = hspec $ do
     randPairTests2
     randString3Test
     repRandomTest
+    yLinkTest
+    addSalariesTest

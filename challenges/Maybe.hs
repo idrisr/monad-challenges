@@ -85,3 +85,12 @@ queryGreek2 g s = q
     o = xs `link` headMay
     p = n `link` \a -> o `link` \b -> Just (fromIntegral a, fromIntegral b)
     q = p `link` uncurry divMay
+
+addSalaries :: [(String, Integer)] -> String -> String -> Maybe Integer
+addSalaries s a b = yLink (+) (lookupMay a s) (lookupMay b s)
+
+yLink :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+yLink f x y = x `link` \x1 -> y `link` \y1 -> mkMaybe $ f x1 y1
+
+mkMaybe :: a -> Maybe a
+mkMaybe = Just
