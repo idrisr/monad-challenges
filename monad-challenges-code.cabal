@@ -49,5 +49,7 @@ test-suite test-foo
                       challenges,
                       hspec,
                       SHA,
-                      utf8-string
+                      utf8-string,
+                      mcprelude
+
     default-language: Haskell2010
