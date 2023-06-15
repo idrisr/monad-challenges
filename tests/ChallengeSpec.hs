@@ -1,6 +1,16 @@
 module Main where
 
-import Challenge (fiveRands, generalB, randEven, randLetter, randOdd, randPair, randString3, randTen)
+import Challenge (
+    fiveRands,
+    generalB,
+    randEven,
+    randLetter,
+    randOdd,
+    randPair,
+    randString3,
+    randTen,
+    repRandom,
+ )
 import Data.ByteString.Lazy.UTF8 as BLU
 import Data.Digest.Pure.SHA (sha256, showDigest)
 import MCPrelude (mkSeed, rand)
@@ -41,6 +51,12 @@ randPairTests2 = do
     it "gets the right answer" $ do
         ans `shouldBe` exp
 
+repRandomTest :: Spec
+repRandomTest = do
+    let exp = fst $ repRandom (replicate 3 randLetter) $ mkSeed 1
+    it "gets the same answer as randString3" $ do
+        exp `shouldBe` randString3
+
 main :: IO ()
 main = hspec $ do
     fiveRandsTests
@@ -48,3 +64,4 @@ main = hspec $ do
     generalATests
     randPairTests
     randPairTests2
+    repRandomTest

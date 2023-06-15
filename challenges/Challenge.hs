@@ -2,8 +2,6 @@ module Challenge where
 
 import MCPrelude
 
-type Gen a = Seed -> (a, Seed)
-
 fiveRands :: [Integer]
 fiveRands = [a, b, c, d, e]
   where
@@ -59,3 +57,13 @@ randPair s =
     let (a, s1) = randLetter s
         (b, s2) = rand s1
      in ((a, b), s2)
+
+type Gen a = Seed -> (a, Seed)
+
+-- repRandom :: [Gen a] -> Seed -> (a, Seed)
+repRandom :: [Gen a] -> Gen [a]
+repRandom [] s = ([], s)
+repRandom (x:xs) s = (y:ys, s1)
+  where
+    (y, s1) = x s
+    (ys, s2) = repRandom xs s1
