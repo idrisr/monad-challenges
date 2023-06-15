@@ -68,3 +68,20 @@ queryGreek g s = p
         (Just _, Nothing) -> Nothing
         (Nothing, Just _) -> Nothing
         (Nothing, Nothing) -> Nothing
+
+chain :: (a -> Maybe b) -> Maybe a -> Maybe b
+chain f (Just a) = f a
+chain _ Nothing = Nothing
+
+link :: Maybe a -> (a -> Maybe b) -> Maybe b
+link = flip chain
+
+queryGreek2 :: GreekData -> String -> Maybe Double
+queryGreek2 g s = q
+  where
+    xs = lookupMay s g
+    m = xs `link` tailMay
+    n = m `link` maximumMay
+    o = xs `link` headMay
+    p = n `link` \a -> o `link` \b -> Just (fromIntegral a, fromIntegral b)
+    q = p `link` uncurry divMay
