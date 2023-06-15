@@ -1,6 +1,6 @@
 module Main where
 
-import Challenge (
+import State (
     fiveRands,
     generalB,
     randEven,

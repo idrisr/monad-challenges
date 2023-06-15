@@ -1,6 +1,7 @@
-module Challenge where
+module State where
 
 import MCPrelude
+import Prelude()
 
 fiveRands :: [Integer]
 fiveRands = [a, b, c, d, e]

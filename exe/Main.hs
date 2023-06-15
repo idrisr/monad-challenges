@@ -1,6 +1,6 @@
 module Main where
 
-import Challenge
+import State
 
 main :: IO ()
 main = print randString3
