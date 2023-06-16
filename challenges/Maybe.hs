@@ -94,3 +94,21 @@ yLink f x y = x `link` \x1 -> y `link` \y1 -> mkMaybe $ f x1 y1
 
 mkMaybe :: a -> Maybe a
 mkMaybe = Just
+
+tailProd :: Num a => [a] -> Maybe a
+tailProd xs = transMaybe product $ tailMay xs
+
+tailSum :: Num a => [a] -> Maybe a
+tailSum xs = transMaybe sum $ tailMay xs
+
+tailMax :: Ord a => [a] -> Maybe (Maybe a)
+tailMax xs = transMaybe maximumMay $ tailMay xs
+
+tailMin :: Ord a => [a] -> Maybe (Maybe a)
+tailMin xs = transMaybe minimumMay $ tailMay xs
+
+transMaybe :: (a -> b) -> Maybe a -> Maybe b
+transMaybe f x = x `link` \a -> Just $ f a
+
+combine :: Maybe (Maybe a) -> Maybe a
+combine x = x `link` id

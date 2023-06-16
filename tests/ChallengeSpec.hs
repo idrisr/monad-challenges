@@ -111,6 +111,18 @@ addSalariesTest = do
         addSalaries salaries "carol" "alice" `shouldBe` Just 190000
         addSalaries salaries "eve" "frank" `shouldBe` Nothing
 
+tailSumTest = do
+    it "gets the correct Maybe value" $ do
+        tailSum [1 .. 10] `shouldBe` Just (sum [2 .. 10])
+        tailSum [] `shouldBe` Nothing
+        tailSum [123] `shouldBe` Just 0
+
+tailProdTest = do
+    it "gets the correct Maybe value" $ do
+        tailProd [1 .. 10] `shouldBe` Just (product [2 .. 10])
+        tailProd [123] `shouldBe` Just 1
+        tailProd [] `shouldBe` Nothing
+
 main :: IO ()
 main = hspec $ do
     fiveRandsTests
@@ -123,3 +135,5 @@ main = hspec $ do
     repRandomTest
     yLinkTest
     addSalariesTest
+    tailSumTest
+    tailProdTest

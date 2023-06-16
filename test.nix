@@ -5,11 +5,10 @@ mkDerivation {
   src = ./.;
   isLibrary = false;
   isExecutable = true;
-  libraryHaskellDepends = [ base split ];
-  executableHaskellDepends = [ base ];
+  libraryHaskellDepends = [ base ];
+  executableHaskellDepends = [ base split ];
   testHaskellDepends = [ base hspec SHA utf8-string ];
   doHaddock = false;
   description = "The best way to learn monads";
   license = lib.licenses.bsd3;
-  mainProgram = "main";
 }

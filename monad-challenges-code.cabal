@@ -24,7 +24,7 @@ Tested-With:
 library mcprelude
     exposed-modules:     MCPrelude
     other-extensions:    Trustworthy, CPP, NoImplicitPrelude, BangPatterns
-    build-depends:       base >= 4 && < 5, split
+    build-depends:       base >= 4 && < 5
     hs-source-dirs:      src
     default-language:    Haskell2010
 
@@ -33,6 +33,12 @@ library challenges
     other-extensions:    NoImplicitPrelude, MonadComprehensions, RebindableSyntax
     build-depends:       base >= 4 && < 5, mcprelude
     hs-source-dirs:      challenges
+    default-language:    Haskell2010
+
+executable hexdecode
+    hs-source-dirs: src
+    main-is: hexDecode.hs
+    build-depends: base, split
     default-language:    Haskell2010
 
 executable main
