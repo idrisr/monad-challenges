@@ -29,7 +29,7 @@ library mcprelude
     default-language:    Haskell2010
 
 library challenges
-    exposed-modules:     State, Maybe
+    exposed-modules:     State, Maybe, List
     other-extensions:    NoImplicitPrelude, MonadComprehensions, RebindableSyntax
     build-depends:       base >= 4 && < 5, mcprelude
     hs-source-dirs:      challenges
@@ -47,10 +47,11 @@ executable main
     build-depends: base, mcprelude, challenges
     default-language:    Haskell2010
 
-test-suite test-foo
+test-suite test-monad
     type:             exitcode-stdio-1.0
     hs-source-dirs:   tests
-    main-is:          ChallengeSpec.hs
+    main-is:          Runner.hs
+    other-modules:    ListSpec, MaybeSpec, StateSpec
     build-depends:    base,
                       challenges,
                       hspec,
