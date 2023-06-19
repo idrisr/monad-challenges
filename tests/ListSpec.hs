@@ -1,12 +1,14 @@
 module ListSpec where
 
 import List (
+    allCards,
+    allCombs3,
     allPairs,
-    allCards
+    combStep,
  )
 
-import Test.Hspec
 import MCPrelude
+import Test.Hspec
 
 allPairsTest = do
     describe "does the cartesian product" $ do
@@ -30,4 +32,25 @@ allPairsTest = do
                            , (2, 4)
                            ]
 
-specs = [ allPairsTest ]
+allCombs3Test = do
+    describe "gets the answer from the website" $ do
+        it "three list" $ do
+            let exp =
+                    [ (1, 3, 5)
+                    , (1, 3, 6)
+                    , (1, 4, 5)
+                    , (1, 4, 6)
+                    , (2, 3, 5)
+                    , (2, 3, 6)
+                    , (2, 4, 5)
+                    , (2, 4, 6)
+                    ]
+            let ans = allCombs3 (,,) [1, 2] [3, 4] [5, 6]
+             in exp `shouldBe` ans
+
+combStepTest = do
+    describe "wtf" $ do
+        it "wtf" $ do
+            combStep [(+1), (*3)] [3, 4] `shouldBe` [4, 5, 9, 12]
+
+specs = [allPairsTest, allCombs3Test, combStepTest]
