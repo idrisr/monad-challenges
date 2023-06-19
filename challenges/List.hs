@@ -10,14 +10,6 @@ data Card = Card Int String
 instance Show Card where
     show (Card i s) = show i ++ s
 
-allCombs :: (a -> b -> c) -> [a] -> [b] -> [c]
-allCombs f (x : xs) ys = h f x ys ++ allCombs f xs ys
-  where
-    h :: (a -> b -> c) -> a -> [b] -> [c]
-    h f x (y : ys) = f x y : h f x ys
-    h _ _ [] = []
-allCombs _ [] _ = []
-
 allPairs :: [a] -> [b] -> [(a, b)]
 allPairs = allCombs (,)
 
@@ -35,3 +27,8 @@ allCombs4 _ [] _ _ _ = []
 combStep :: [a -> b] -> [a] -> [b]
 combStep (f:fs) xs = map f xs ++ combStep fs xs
 combStep [] _ = []
+
+allCombs :: (a -> b -> c) -> [a] -> [b] -> [c]
+allCombs f (x:xs) ys = combStep [f x] ys ++ allCombs f xs ys
+allCombs _ _ [] = []
+allCombs _ [] _ = []
