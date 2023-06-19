@@ -2,9 +2,11 @@ module ListSpec where
 
 import List (
     allPairs,
+    allCards
  )
 
 import Test.Hspec
+import MCPrelude
 
 allPairsTest = do
     describe "does the cartesian product" $ do
