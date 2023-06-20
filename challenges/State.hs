@@ -1,7 +1,7 @@
 module State where
 
 import MCPrelude
-import Prelude()
+import Prelude ()
 
 fiveRands :: [Integer]
 fiveRands = [a, b, c, d, e]
@@ -26,14 +26,14 @@ randString3 = [a, b, c]
     (b, s2) = randLetter s1
     (c, _) = randLetter s2
 
-generalA :: (a -> b) -> Gen a -> Gen b
-generalA f x s = let (b, s') = x s in (f b, s')
-
 generalB :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
 generalB f x y s = (f a b, s2)
   where
     (a, s1) = x s
     (b, s2) = y s1
+
+generalB2 :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
+generalB2 f x y = x `genTwo` \x1 -> y `genTwo` \y1 -> mkGen $ f x1 y1
 
 generalPair :: Gen a -> Gen b -> Gen (a, b)
 generalPair x y s = ((a, b), s2)
@@ -61,13 +61,18 @@ randPair s =
 
 type Gen a = Seed -> (a, Seed)
 
--- repRandom :: [Gen a] -> Seed -> (a, Seed)
+-- repRandom :: [Gen a] -> Seed -> ([a], Seed)
 repRandom :: [Gen a] -> Gen [a]
 repRandom [] s = ([], s)
 repRandom (x : xs) s = (y : ys, s1)
   where
     (y, s1) = x s
     (ys, s2) = repRandom xs s1
+
+repRandom' :: [Gen a] -> Gen [a]
+repRandom' [] = mkGen []
+repRandom' (x:xs) = x `genTwo` b
+    where b x = generalA (x:) $ repRandom' xs
 
 mkGen :: a -> Gen a
 mkGen a s = (a, s)
@@ -77,3 +82,6 @@ genTwo x y s = (b, s2)
   where
     (a, s1) = x s
     (b, s2) = y a s1
+
+generalA :: (a -> b) -> Gen a -> Gen b
+generalA f x s = let (b, s') = x s in (f b, s')
