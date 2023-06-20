@@ -60,27 +60,20 @@ queryGreek g s = p
         (Nothing, Nothing) -> Nothing
 
 chain :: (a -> Maybe b) -> Maybe a -> Maybe b
-chain f (Just a) = f a
-chain _ Nothing = Nothing
-
-link :: Maybe a -> (a -> Maybe b) -> Maybe b
-link = flip chain
+chain = (=<<)
 
 queryGreek2 :: GreekData -> String -> Maybe Double
 queryGreek2 g s = q
   where
     xs = lookupMay s g
-    m = xs `link` tailMay
-    n = m `link` maximumMay
-    o = xs `link` headMay
-    p = n `link` \a -> o `link` \b -> Just (fromIntegral a, fromIntegral b)
-    q = p `link` uncurry divMay
+    m = xs `bind` tailMay
+    n = m `bind` maximumMay
+    o = xs `bind` headMay
+    p = n `bind` \a -> o `bind` \b -> Just (fromIntegral a, fromIntegral b)
+    q = p `bind` uncurry divMay
 
 addSalaries :: [(String, Integer)] -> String -> String -> Maybe Integer
-addSalaries s a b = yLink (+) (lookupMay a s) (lookupMay b s)
-
-yLink :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-yLink f x y = x `link` \x1 -> y `link` \y1 -> mkMaybe $ f x1 y1
+addSalaries s a b = liftM2 (+) (lookupMay a s) (lookupMay b s)
 
 mkMaybe :: a -> Maybe a
 mkMaybe = Just
@@ -98,7 +91,4 @@ tailMin :: Ord a => [a] -> Maybe (Maybe a)
 tailMin xs = transMaybe minimumMay $ tailMay xs
 
 transMaybe :: (a -> b) -> Maybe a -> Maybe b
-transMaybe f x = x `link` \a -> Just $ f a
-
-combine :: Maybe (Maybe a) -> Maybe a
-combine x = x `link` id
+transMaybe f x = x `bind` \a -> Just $ f a

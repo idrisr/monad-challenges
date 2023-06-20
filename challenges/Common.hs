@@ -60,5 +60,13 @@ liftM3 f x y z =
             z `bind` \z1 ->
                 return $ f x1 y1 z1
 
+liftM4 :: Monad m => (a -> b -> c -> d -> e) -> m a -> m b -> m c -> m d -> m e
+liftM4 f x y z w =
+    x `bind` \x1 ->
+        y `bind` \y1 ->
+            z `bind` \z1 ->
+                w `bind` \w1 ->
+                    return $ f x1 y1 z1 w1
+
 ap :: Monad m => m (a -> b) -> m a -> m b
 ap f x = f `bind` \f1 -> x `bind` \x1 -> return (f1 x1)

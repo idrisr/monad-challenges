@@ -44,10 +44,10 @@ queryGreekTest2 = do
 
 yLinkTest = do
     it "works" $ do
-        yLink (+) (Just 10) (Just 10) `shouldBe` Just 20
-        yLink (+) Nothing (Just 10) `shouldBe` Nothing
-        yLink (+) (Just 10) Nothing `shouldBe` Nothing
-        yLink (+) Nothing Nothing `shouldBe` Nothing
+        liftM2 (+) (Just 10) (Just 10) `shouldBe` Just 20
+        liftM2 (+) Nothing (Just 10) `shouldBe` Nothing
+        liftM2 (+) (Just 10) Nothing `shouldBe` Nothing
+        liftM2 (+) Nothing Nothing `shouldBe` Nothing
 
 addSalariesTest = do
     it "get the right salary totals" $ do
