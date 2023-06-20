@@ -1,6 +1,7 @@
 module MaybeSpec where
 
 import Maybe
+import Common
 import Prelude hiding (Just, Maybe, Nothing)
 
 import MCPrelude (
