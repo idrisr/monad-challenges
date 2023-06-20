@@ -4,91 +4,47 @@ import MCPrelude
 import Prelude ()
 import Common
 
-type Gen a = Seed -> (a, Seed)
-
-fiveRands1 :: [Integer]
-fiveRands1 = fst $ unGen a $ mkSeed 1
+fiveRands :: [Integer]
+fiveRands = fst $ unGen a $ mkSeed 1
     {- HLINT ignore "Use replicateM" -}
     where a = sequence $ replicate 5 $ Gen rand
 
-fiveRands :: [Integer]
-fiveRands = [a, b, c, d, e]
-  where
-    s0 = mkSeed 1
-    (a, s1) = rand s0
-    (b, s2) = rand s1
-    (c, s3) = rand s2
-    (d, s4) = rand s3
-    (e, _) = rand s4
+randString3 :: String
+randString3 = fst $ unGen a $ mkSeed 1
+    where a = sequence $ replicate 3 randLetter
 
--- randLetter :: Gen Char
--- randLetter s = (toLetter i, s')
-  -- where
-    -- (i, s') = rand s
+generalB :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
+generalB = liftM2
 
--- randString3 :: String
--- randString3 = [a, b, c]
-  -- where
-    -- s0 = mkSeed 1
-    -- (a, s1) = randLetter s0
-    -- (b, s2) = randLetter s1
-    -- (c, _) = randLetter s2
+randLetter :: Gen Char
+randLetter = liftM toLetter $ Gen rand
 
--- generalB :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
--- generalB f x y s = (f a b, s2)
-  -- where
-    -- (a, s1) = x s
-    -- (b, s2) = y s1
+generalB2 :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
+generalB2 = liftM2
 
--- generalB2 :: (a -> b -> c) -> Gen a -> Gen b -> Gen c
--- generalB2 f x y = x `genTwo` \x1 -> y `genTwo` \y1 -> mkGen $ f x1 y1
+generalPair2 :: Gen a -> Gen b -> Gen (a, b)
+generalPair2 = liftM2 (,)
 
--- generalPair :: Gen a -> Gen b -> Gen (a, b)
--- generalPair x y s = ((a, b), s2)
-  -- where
-    -- (a, s1) = x s
-    -- (b, s2) = y s1
+randEven :: Gen Integer
+randEven = liftM (* 2) $ Gen rand
 
--- generalPair2 :: Gen a -> Gen b -> Gen (a, b)
--- generalPair2 = generalB (,)
+randOdd :: Gen Integer
+randOdd = liftM (+ 1) randEven
 
--- randEven :: Gen Integer
--- randEven = generalA (* 2) rand
+randTen :: Gen Integer
+randTen = liftM (* 5) randEven
 
--- randOdd :: Gen Integer
--- randOdd = generalA (+ 1) randEven
+randPair :: Gen (Char, Integer)
+randPair = liftM2 (,) randLetter $ Gen rand
 
--- randTen :: Gen Integer
--- randTen = generalA (* 5) randEven
+repRandom' :: [Gen a] -> Gen [a]
+repRandom' = sequence
 
--- randPair :: Gen (Char, Integer)
--- randPair s =
-    -- let (a, s1) = randLetter s
-        -- (b, s2) = rand s1
-     -- in ((a, b), s2)
+mkGen :: a -> Gen a
+mkGen  = return
 
+genTwo :: Gen a -> (a -> Gen b) -> Gen b
+genTwo = bind
 
--- -- repRandom :: [Gen a] -> Seed -> ([a], Seed)
--- repRandom :: [Gen a] -> Gen [a]
--- repRandom [] s = ([], s)
--- repRandom (x : xs) s = (y : ys, s1)
-  -- where
-    -- (y, s1) = x s
-    -- (ys, s2) = repRandom xs s1
-
--- repRandom' :: [Gen a] -> Gen [a]
--- repRandom' [] = mkGen []
--- repRandom' (x:xs) = x `genTwo` b
-    -- where b x = generalA (x:) $ repRandom' xs
-
--- mkGen :: a -> Gen a
--- mkGen a s = (a, s)
-
--- genTwo :: Gen a -> (a -> Gen b) -> Gen b
--- genTwo x y s = (b, s2)
-  -- where
-    -- (a, s1) = x s
-    -- (b, s2) = y a s1
-
--- generalA :: (a -> b) -> Gen a -> Gen b
--- generalA f x s = let (b, s') = x s in (f b, s')
+generalA :: (a -> b) -> Gen a -> Gen b
+generalA = liftM

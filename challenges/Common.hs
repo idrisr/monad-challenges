@@ -36,11 +36,16 @@ instance Monad Gen where
         let (s1, a) = x s
          in unGen (y s1) a
 
+liftM :: Monad m => (a -> b) -> m a -> m b
+liftM f x = x `bind` \x1 -> return $ f x1
+
 liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c
 liftM2 f x y = x `bind` \x1 -> y `bind` \y1 -> return $ f x1 y1
 
 sequence :: Monad m => [m a] -> m [a]
+{- hlint ignore: "Use foldr" -}
 sequence (x : xs) = liftM2 (:) x $ sequence xs
+sequence [] = return []
 
 (=<<) :: Monad m => (a -> m b) -> m a -> m b
 (=<<) = flip bind
